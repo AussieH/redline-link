@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Redline Link: the companion for drivers without a Stream Deck. One native exe with the Windows SDK installed:
+       dotnet publish -c Release -o publish  -> publish\RedlineLink.exe   (README.md: building without the Windows SDK) -->
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <PublishAot>true</PublishAot>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <UseSystemResourceKeys>true</UseSystemResourceKeys>
+    <OptimizationPreference>Size</OptimizationPreference>
+    <StackTraceSupport>false</StackTraceSupport>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AssemblyName>RedlineLink</AssemblyName>
+    <RootNamespace>RedlineLink</RootNamespace>
+    <Version>0.1.0</Version>
+    <Company>TeaTime</Company>
+    <Product>Redline Link</Product>
+    <Description>Redline Link: Forza Horizon 6 Data Out for the Redline Deck dashboard file and iCUE widgets</Description>
+    <Copyright>TeaTime</Copyright>
+    <ApplicationIcon>redline.ico</ApplicationIcon>
+  </PropertyGroup>
+</Project>
