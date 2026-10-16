@@ -35,6 +35,7 @@ public static class Program
         Mutex? single = null;
         if (tray) { single = new Mutex(true, @"Local\RedlineLink", out bool first); if (!first) return 1; }   // one copy at a time
         LoadSettings(args);
+        Files.CleanLeftovers();
         // Bind first, then say "waiting": a packet sent the moment the file appears must find the socket there.
         UdpClient? udp = null;
         try { udp = new UdpClient(new IPEndPoint(Network ? IPAddress.Any : IPAddress.Loopback, Port)); LinkState = "listening"; }
@@ -144,7 +145,9 @@ public static class Files
         try { File.WriteAllBytes(tmp, json); } catch (IOException) { return "failed"; } catch (UnauthorizedAccessException) { return "failed"; }
         for (int attempt = 0; attempt < 2; attempt++)
         {
-            try { if (File.Exists(StatePath)) File.Replace(tmp, StatePath, null); else File.Move(tmp, StatePath); return "renamed"; }
+            // A plain rename over the old file (MoveFileEx with replace), not File.Replace: ReplaceFile leaves
+            // state.json~RF*.TMP files behind when a reader such as iCUE holds the file at the wrong moment.
+            try { File.Move(tmp, StatePath, overwrite: true); return "renamed"; }
             catch (IOException) { } catch (UnauthorizedAccessException) { }
             if (attempt == 0) Thread.Sleep(5);
         }
@@ -160,6 +163,12 @@ public static class Files
     public static void Heartbeat(long now)
     {
         try { File.WriteAllText(Path.Combine(Program.Dir, "companion.json"), $"{{\"app\":\"Redline Link\",\"pid\":{Environment.ProcessId},\"at\":{now},\"port\":{Program.Port}}}"); } catch (IOException) { } catch (UnauthorizedAccessException) { }
+    }
+    /// <summary>Removes the state.json~RF*.TMP files Redline Link 0.1.0 could leave behind (its File.Replace), and only those.</summary>
+    public static void CleanLeftovers()
+    {
+        try { foreach (var f in Directory.GetFiles(Program.Dir, "state.json~RF*.TMP")) { try { File.Delete(f); } catch (IOException) { } catch (UnauthorizedAccessException) { } } }
+        catch (IOException) { } catch (UnauthorizedAccessException) { }
     }
     public static void RemoveHeartbeat() { try { File.Delete(Path.Combine(Program.Dir, "companion.json")); } catch (IOException) { } catch (UnauthorizedAccessException) { } }
 }
