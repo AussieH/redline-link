@@ -30,7 +30,8 @@ Times in `at` are Unix milliseconds. Raw SI units, plus the driver's unit choice
 - `state`: `waiting` before the first packet; `driving` while packets arrive and the game says a race (any driving) is on; `paused` in menus, during a rewind, or when packets stop for a second; `busy` when the port is taken by another program.
 - `car.cls` and `car.piClass`: D, C, B, A, S1, S2, R, X. `car.drive`: FWD, RWD, AWD.
 - `race.lap` counts from 1; the game does not send the total number of laps.
-- `tyres.tempF` is the raw tyre temperature as the game sends it.
+- `tyres` holds the four tires (FL, FR, RL, RR). The field is named `tyres` for compatibility: Redline Deck, Redline Dashboard and other readers already look for that name, so it stays as it is even though everything else here says "tires".
+- `tyres.tempF` is the raw tire temperature as the game sends it.
 
 ## The WebSocket
 

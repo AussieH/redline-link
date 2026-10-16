@@ -7,7 +7,7 @@ The Stream Deck plugin **Redline Deck** writes exactly the same file. Use whiche
 ## What it does
 
 - Receives Forza Horizon 6's Data Out packets on UDP port **5605** (on this PC only, unless you turn network on).
-- Writes `%APPDATA%\RedlineDeck\state.json` about ten times a second while you drive, and every 5 seconds otherwise. The file holds the car, speed, gear, revs, boost, fuel, lap times, tyres, G-forces, pedals and position. The format is in [docs/STATE-FILE.md](docs/STATE-FILE.md).
+- Writes `%APPDATA%\RedlineDeck\state.json` about ten times a second while you drive, and every 5 seconds otherwise. The file holds the car, speed, gear, revs, boost, fuel, lap times, tires, G-forces, pedals and position. The format is in [docs/STATE-FILE.md](docs/STATE-FILE.md).
 - Serves the same state on a localhost WebSocket (and a plain `GET /state.json`) on TCP port **5605**, for widgets that want a smoother stream. Only local pages may connect: the Host must be this PC and the Origin absent, `null` or `file://`, so a website in your browser cannot read it.
 - Passes every packet on, unchanged, to up to four other ports, so other telemetry apps keep working.
 
